@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets" id="http://yourdomain/WPhoneSafe" version="1.0.0" viewmodes="maximized">
+    <tizen:application id="UNJsMrmTL8.WPhoneSafe" package="UNJsMrmTL8" required_version="2.3"/>
+    <content src="safe.html"/>
+    <feature name="http://tizen.org/feature/screen.size.all"/>
+    <icon src="icon.png"/>
+    <name>WPhoneSafe</name>
+    <tizen:profile name="wearable"/>
+    
+    <feature name="http://developer.samsung.com/tizen/feature/network.accessory_protocol"/>
+    <tizen:metadata key="AccessoryServicesLocation" value="res/xml/accessoryservices.xml"/>
+    <tizen:privilege name="http://developer.samsung.com/privilege/accessoryprotocol"/>    
+    
+</widget>

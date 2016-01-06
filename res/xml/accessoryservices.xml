@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <application name="PhoneSafe" >
+        <serviceProfile
+            id="/safe/hello"
+            name="safe"
+            role="consumer"
+            version="1.0">
+            
+            <supportedTransports>
+                <transport type="TRANSPORT_BT" />
+                <transport type="TRANSPORT_WIFI"/>
+            </supportedTransports>
+            <serviceChannel
+                id="666"
+                dataRate="low"
+                priority="low"
+                reliability= "enable"/>
+        </serviceProfile>
+    </application>
+</resources>
