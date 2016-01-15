@@ -34,3 +34,56 @@ body {
 .green-text {
 	color: green;
 }
+
+.lock {
+	width: 360px;
+	height: 360px;
+	background-image: url("../images/safelock.png");
+	background-size: cover;
+	position: fixed;
+}
+
+.code {
+	top: 100px;
+	left: 120px;
+	width: 120px;
+	height: 120px;
+	position: relative;
+}
+
+.arrow {
+	top: 10px;
+	left: 170px;
+	width: 20px;
+	height: 20px;
+	position: relative;
+	background-image: url("../images/arrow.png");
+}
+
+.code .current-value {
+	font-size: 50px;
+}
+
+.code .small-value {
+	font-size: 15px;
+}
+
+
+.reverse-ellipsis {
+  text-overflow: clip;
+  position: relative;
+  overflow: hidden;
+/* 	word-wrap: break-word;
+	max-height: 35px;
+	overflow: hidden; */
+}
+
+.reverse-ellipsis span {
+  min-width: 100%;
+  position: relative;
+  display: inline-block;
+  float: right;
+  overflow: visible;
+  background-color: inherit;
+  text-indent: 0.5em;
+}

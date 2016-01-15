@@ -2,20 +2,20 @@
 <resources>
     <application name="PhoneSafe" >
         <serviceProfile
-            id="/safe/hello"
+            id="/safe/action"
             name="safe"
-            role="consumer"
-            version="1.0">
+            autoLaunchAppId="UNJsMrmTL8.WPhoneSafe"
+            role="provider"
+            version="1.0"
+            serviceLimit="ANY"
+            serviceTimeout="10">
             
             <supportedTransports>
                 <transport type="TRANSPORT_BT" />
                 <transport type="TRANSPORT_WIFI"/>
             </supportedTransports>
-            <serviceChannel
-                id="666"
-                dataRate="low"
-                priority="low"
-                reliability= "enable"/>
+            
+            <serviceChannel id="228" dataRate="low" priority="low" reliability= "enable"/>
         </serviceProfile>
     </application>
 </resources>

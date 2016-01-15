@@ -5,30 +5,34 @@
     <meta charset="utf-8"/>
     <meta name="description" content="TouchPaint"/>
     <title>PhoneSafe</title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css"/>
     <link rel="stylesheet" href="lib/tau/wearable/theme/default/tau.css">
     <link rel="stylesheet" media="all and (-tizen-geometric-shape: circle)"
           href="lib/tau/wearable/theme/default/tau.circle.min.css">
-    <link rel="stylesheet" type="text/css" href="./css/style.css"/>
+    
 </head>
 
 <body>
-    <div class="ui-page">
-        <header class="ui-header">
+    <div id="mainPage" class="ui-page" data-enable-page-scroll="false">
+        <!-- <header class="ui-header">
             <h2 class="ui-title">PhoneSafe</h2>
-        </header>
-        <div class="ui-content content-padding">
-            <span id="connect_status">...</span><br>
-            <span id="safe_status">...</span><br>
-            Files in safe:<br>
-            sdcard:files/1.png<br>
-            sdcard:files/2.png<br>
-            sdcard:files/3.png<br>
-            sdcard:files2/*<br>
-            sdcard:files3/*<br>
+        </header> -->
+        
+        <div class="ui-content">
+            <div id="lock" class="lock"></div>
+            <div class="arrow"></div>
+            <div id="code" class="code">            	
+            	<div id="current_value" class="current-value">0</div>
+            	<div class="small-value reverse-ellipsis"><span id="full_value"></span></div>
+            	<div id="connect_status" class="small-value">...</div>
+            	<div id="action_status" class="small-value">Choose action in phone</div>
+            </div>
         </div>
-		<footer class="ui-footer ui-bottom-button ui-fixed">
-			<button id="action_button" class="ui-btn">Close</button>
-		</footer>        
+        
+		<!-- <footer class="ui-footer ui-bottom-button ui-fixed">
+			<button id="action_button" class="ui-btn">Sync</button>
+		</footer> -->
+
     </div>
 	<script src="./lib/tau/wearable/js/tau.js"></script>
 	<script src="./js/main.js"></script>
