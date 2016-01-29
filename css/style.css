@@ -2,6 +2,12 @@
     font-family: Verdana, Lucida Sans, Arial, Helvetica, sans-serif;
 }
 
+body:after
+{
+	content: url(../images/arrow.png) url(../images/safelock360.png);
+	display: none;
+}
+
 body {
     margin: 0px auto;
     background-color:#222;
@@ -38,17 +44,21 @@ body {
 .lock {
 	width: 360px;
 	height: 360px;
-	background-image: url("../images/safelock.png");
+	background-image: url("../images/safelock360.png");
 	background-size: cover;
 	position: fixed;
 }
 
 .code {
-	top: 100px;
-	left: 120px;
-	width: 120px;
-	height: 120px;
+	top: 90px;
+	left: 110px;
+	width: 140px;
+	height: 140px;
 	position: relative;
+}
+.code:hover {
+	background-color: #1cb5c9;
+	border-radius: 70px;
 }
 
 .arrow {
@@ -86,4 +96,8 @@ body {
   overflow: visible;
   background-color: inherit;
   text-indent: 0.5em;
+}
+
+#connect_status {
+	display: none;
 }

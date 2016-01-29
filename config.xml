@@ -2,13 +2,13 @@
 <widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets" id="http://yourdomain/WPhoneSafe" version="1.0.0" viewmodes="maximized">
     <tizen:application id="UNJsMrmTL8.WPhoneSafe" package="UNJsMrmTL8" required_version="2.3"/>
     <content src="safe.html"/>
-    <feature name="http://tizen.org/feature/screen.size.all"/>
-    <icon src="icon.png"/>
-    <name>WPhoneSafe</name>
-    <tizen:profile name="wearable"/>
-    
     <feature name="http://developer.samsung.com/tizen/feature/network.accessory_protocol"/>
+    <feature name="http://tizen.org/feature/screen.shape.circle"/>
+    <icon src="images/ic_safelock.png"/>
     <tizen:metadata key="AccessoryServicesLocation" value="res/xml/accessoryservices.xml"/>
-    <tizen:privilege name="http://developer.samsung.com/privilege/accessoryprotocol"/>    
-    
+    <name>Safe Lock</name>
+    <tizen:privilege name="http://developer.samsung.com/privilege/accessoryprotocol"/>
+    <tizen:privilege name="http://tizen.org/privilege/power"/>
+    <tizen:profile name="wearable"/>
+    <tizen:setting background-support="enable" />
 </widget>
