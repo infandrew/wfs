@@ -2,11 +2,11 @@
     font-family: Verdana, Lucida Sans, Arial, Helvetica, sans-serif;
 }
 
-body:after
+/* body:after
 {
 	content: url(../images/arrow.png) url(../images/safelock360.png);
 	display: none;
-}
+} */
 
 body {
     margin: 0px auto;
@@ -95,9 +95,28 @@ body {
   float: right;
   overflow: visible;
   background-color: inherit;
-  text-indent: 0.5em;
+  /*text-indent: 0.5em;*/
 }
 
 #connect_status {
 	display: none;
+}
+
+.slide-container {
+	width: 140px;
+	height: 40px;
+	overflow-y: hidden;
+	
+}
+
+.slide-object {
+	position: relative;
+}
+
+.slide-container span {
+	float: left;
+	width: 140px;
+	height: 40px;
+	padding-left: 10px;
+	padding-right: 10px;
 }

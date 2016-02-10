@@ -1,12 +1,16 @@
 /*global tau */
-window.onload = function() {
-	var SAAgentProvider, SASocket = null, appName = "PhoneSafe", isCircle = tau.support.shape.circle, codeSingleValue = 0, pressTimer, longPress = false, picking = false, exitTimer,
-
+// window.onload = function() {
+var start = function() {
+	var SAAgentProvider, SASocket = null, appName = "PhoneSafe", codeSingleValue = 0, pressTimer, longPress = false, picking = false, exitTimer,
+	
+	startTime = new Date().getTime();
+	
 	CHANNEL = {
 		ACTION : 228
 	}, ACTION = {
-		CLOSE : "close",
-		OPEN : "open"
+		GET : "get",
+		BEFORE_CHANGE : "before_change",
+		NEW : "new"
 	},
 
 	connectStatus = document.getElementById("connect_status"), actionStatus = document
@@ -35,6 +39,8 @@ window.onload = function() {
 			var lastDot = key.lastIndexOf(".");
 			if (lastDot != -1)
 				fullValueDiv.innerHTML = key.substr(0, lastDot);
+			else
+				fullValueDiv.innerHTML = "";
 		}
 	}	
 	function updateSingleValue() {
@@ -45,14 +51,16 @@ window.onload = function() {
 		try {
 			callback();
 		} catch (err) {
-			console
-					.log("exception [" + err.name + "] msg[" + err.message
-							+ "]");
+			var errMsg = "exception [" + err.name + "] msg[" + err.message + "]";
+			updateConnectStatus(errMsg);
+			console.log(errMsg);
 		}
 	}
 
 	function onError(err) {
-		console.log("err [" + err + "]");
+		var errMsg = "err [" + err + "]";
+		updateConnectStatus(errMsg);
+		console.log(errMsg);
 	}
 
 	function disconnect() {
@@ -73,9 +81,10 @@ window.onload = function() {
 		/* Remote peer agent (Consumer) requests a service (Provider) connection */
 		onrequest : function(peerAgent) {
 			/* Check connecting peer by appName */
-			if (peerAgent.appName === appName) {
-				SAAgentProvider.acceptServiceConnectionRequest(peerAgent);
-				updateConnectStatus('<span class="green-text">Accept<span>');
+			SAAgentProvider.acceptServiceConnectionRequest(peerAgent);
+			updateConnectStatus('<span class="green-text">Accept<span>');
+			if (peerAgent.appName === appName) {				
+				//updateConnectStatus('<span class="green-text">Accept<span>');
 			} else {
 				SAAgentProvider.rejectServiceConnectionRequest(peerAgent);
 				updateConnectStatus('<span class="red-text">Reject<span>');
@@ -90,14 +99,16 @@ window.onload = function() {
 						+ "]");
 				disconnect();
 			});
+			
 			SASocket.setDataReceiveListener(function(channelId, data) {
 				var action = data;
 				if (channelId === CHANNEL.ACTION)
 					switch (action) {
-					case ACTION.CLOSE:
-					case ACTION.OPEN:
-						startPicking();
-						break;
+						case ACTION.GET:
+						case ACTION.BEFORE_CHANGE:
+						case ACTION.NEW:
+							startPicking();
+							break;
 					}
 			});
 		},
@@ -110,6 +121,7 @@ window.onload = function() {
 				if (peerAgent.appName === appName) {
 					updateConnectStatus("Phone found");
 					SAAgentProvider.setServiceConnectionListener(agentCallback);
+					// this app is not main
 					// SAAgentProvider.requestServiceConnection(peerAgent);
 				} else {
 					updateConnectStatus("Phone not found");
@@ -123,7 +135,7 @@ window.onload = function() {
 		function requestSAAgentSuccess(agents) {
 			var i;
 			for (i = 0; i < agents.length; i++) {
-				if (agents[i].role === "PROVIDER") {
+				if (agents[i].role === "CONSUMER") {
 					SAAgentProvider = agents[i];
 					SAAgentProvider
 							.setPeerAgentFindListener(peerAgentFindCallback);
@@ -136,13 +148,19 @@ window.onload = function() {
 		function requestSAAgentError(e) {
 			updateConnectStatus("requestSAAgentError");
 		}
-
-		console.log(navigator.platform);
-		if (navigator.platform === "Linux i686")
-			updateConnectStatus("Emulator")
-		else
-			webapis.sa.requestSAAgent(requestSAAgentSuccess,
-					requestSAAgentError);
+		
+		if (navigator.platform === "Linux i686") {
+			updateConnectStatus("Emulator");
+			startPicking();
+		} else {
+			updateFullValue(TIZEN_L10N.choose);
+			webapis.sa.requestSAAgent(requestSAAgentSuccess, requestSAAgentError);
+		}
+		
+		if (tizen.power.turnScreenOn)
+			tizen.power.turnScreenOn();
+		if (tizen.power.request)
+			tizen.power.request("SCREEN", "SCREEN_NORMAL");
 	}
 
 	/*
@@ -173,14 +191,23 @@ window.onload = function() {
 
 	function startPicking() {
 		updateFullValue("");
-		updateActionStatus("LongTap to finish<br>Tap to pick");
+		updateActionStatus(TIZEN_L10N.tip);
+		
+		// animation for tips
+		// var t = tau.animation.target, i = 1;
+		var i = 1;
+		setInterval(function() {			
+			// t("#action_status").tween({translateY: -40 * i}, 0);
+			actionStatus.style.setProperty("top", (-40 * i) + "px");;
+			if (++i > 2) i = 0;
+		}, 10000);
+		
 		picking = true;
 
 		if (navigator.vibrate)
 			navigator.vibrate(200);
 
-		if (tizen.power.turnScreenOn)
-			tizen.power.turnScreenOn();
+
 	}
 
 	function stopPicking(force) {
@@ -191,11 +218,20 @@ window.onload = function() {
 			updateActionStatus("Choose action in phone");
 			picking = false;
 			tryCatchProxy(function() {
-				key = sha256(valueToSend
+				var key = sha256(valueToSend
 						+ tizen.systeminfo
 								.getCapability("http://tizen.org/system/tizenid"));
-				if (SASocket)
-					SASocket.sendData(CHANNEL.ACTION, key);
+				if (!valueToSend)
+					key = "~";
+				if (valueToSend === "@")
+					key = "@";
+				if (SASocket) {
+					SASocket.sendSecureData(CHANNEL.ACTION, key);
+					SASocket.close();
+				}
+				
+				
+				tizen.power.release("SCREEN");
 				tizen.application.getCurrentApplication().exit();
 			});
 		}
@@ -230,11 +266,18 @@ window.onload = function() {
 
 	function onVisibilityChange() {
 		if (document.hidden) {
-			exitTimeout = setTimeout(function() {
+			stopPicking(true);
+			/*var time = new Date().getTime() - startTime;
+			if (time < 7000) {
+				updateFullValue("@");
 				stopPicking(true);
-			}, 5000);
+			} else
+				exitTimeout = setTimeout(function() {
+					stopPicking(true);
+				}, 200);*/
 		} else {
-			clearTimeout(exitTimeout);
+			if (exitTimeout)
+				clearTimeout(exitTimeout);
 		}
 	}
 
@@ -384,3 +427,4 @@ window.onload = function() {
 	bindEvents();
 	initSAAgent();
 };
+start();

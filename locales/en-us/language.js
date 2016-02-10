@@ -2,5 +2,6 @@
 
 TIZEN_L10N=
 {
-	"preparePhone" : "Click close/open button<br>in phone"
+	"tip" : "<span>Tap to pick</span><span>LongTap to undo</span><span>Back to finish</span>",
+	"choose" : "Waiting for action from phone..."
 };

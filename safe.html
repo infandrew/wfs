@@ -5,11 +5,13 @@
     <meta charset="utf-8"/>
     <meta name="description" content="TouchPaint"/>
     <title>PhoneSafe</title>
+    
+    <script src="./js/preload.js"></script>
+    
     <link rel="stylesheet" type="text/css" href="./css/style.css"/>
     <link rel="stylesheet" href="lib/tau/wearable/theme/default/tau.css">
     <link rel="stylesheet" media="all and (-tizen-geometric-shape: circle)"
           href="lib/tau/wearable/theme/default/tau.circle.min.css">
-    
 </head>
 
 <body>
@@ -24,8 +26,9 @@
             <div id="code" class="code">            	
             	<div id="current_value" class="current-value">0</div>
             	<div class="small-value reverse-ellipsis"><span id="full_value"></span></div>
-            	<div id="connect_status" class="small-value">...</div>
-            	<div id="action_status" class="small-value">Choose action in phone</div>
+            	<div id="connect_status" class="small-value"></div>
+            	<!-- <div id="action_status" class="small-value">Choose action in phone</div> -->
+            	<div class="slide-container"><div id="action_status" class="small-value slide-object"></div></div>
             </div>
         </div>
         
@@ -34,8 +37,8 @@
 		</footer> -->
 
     </div>
-	<script src="./lib/tau/wearable/js/tau.js"></script>
-	<script src="./js/visibility.js"></script>
+	<script src="./language.js"></script>
 	<script src="./js/main.js"></script>
+	<script src="./lib/tau/wearable/js/tau.min.js"></script>
 </body>
 </html>

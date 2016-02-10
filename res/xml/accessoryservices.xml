@@ -5,9 +5,9 @@
             id="/safe/action"
             name="safe"
             autoLaunchAppId="UNJsMrmTL8.WPhoneSafe"
-            role="provider"
+            role="comsumer"
             version="1.0"
-            serviceLimit="ANY"
+            serviceLimit="ONE_ACCESSORY"
             serviceTimeout="10">
             
             <supportedTransports>

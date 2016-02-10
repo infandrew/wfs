@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets" id="http://yourdomain/WPhoneSafe" version="1.0.0" viewmodes="maximized">
+<widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets" id="http://yourdomain/WPhoneSafe" version="1.0.0" viewmodes="fullscreen">
     <tizen:application id="UNJsMrmTL8.WPhoneSafe" package="UNJsMrmTL8" required_version="2.3"/>
     <content src="safe.html"/>
     <feature name="http://developer.samsung.com/tizen/feature/network.accessory_protocol"/>
@@ -10,5 +10,5 @@
     <tizen:privilege name="http://developer.samsung.com/privilege/accessoryprotocol"/>
     <tizen:privilege name="http://tizen.org/privilege/power"/>
     <tizen:profile name="wearable"/>
-    <tizen:setting background-support="enable" />
+    <tizen:setting background-support="enable" encryption="disable" hwkey-event="enable"/>
 </widget>
