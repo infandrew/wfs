@@ -5,17 +5,17 @@
             id="/safe/action"
             name="safe"
             autoLaunchAppId="UNJsMrmTL8.WPhoneSafe"
-            role="comsumer"
+            role="consumer"
             version="1.0"
-            serviceLimit="ONE_ACCESSORY"
+            serviceLimit="ONE_PEERAGENT"
             serviceTimeout="10">
-            
+                        
             <supportedTransports>
                 <transport type="TRANSPORT_BT" />
                 <transport type="TRANSPORT_WIFI"/>
             </supportedTransports>
             
-            <serviceChannel id="228" dataRate="low" priority="low" reliability= "enable"/>
+            <serviceChannel id="228" dataRate="high" priority="low" reliability= "enable"/>
         </serviceProfile>
     </application>
 </resources>

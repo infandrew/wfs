@@ -1,7 +1,6 @@
 /*global tau */
-// window.onload = function() {
-var start = function() {
-	var SAAgentProvider, SASocket = null, appName = "PhoneSafe", codeSingleValue = 0, pressTimer, longPress = false, picking = false, exitTimer,
+window.onload = function() {
+	var codeSingleValue = 0, pressTimer, longPress = false, picking = false, exitTimer,
 	
 	startTime = new Date().getTime();
 	
@@ -63,99 +62,21 @@ var start = function() {
 		console.log(errMsg);
 	}
 
-	function disconnect() {
-		tryCatchProxy(function() {
-			if (SASocket !== null) {
-				SASocket.close();
-				SASocket = null;
-				updateConnectStatus('<span class="red-text">Disconnected<span>');
-			}
-		});
-	}
 
-	/**
-	 * Declaration of listeners for SASocket
-	 */
-	var agentCallback = {
-
-		/* Remote peer agent (Consumer) requests a service (Provider) connection */
-		onrequest : function(peerAgent) {
-			/* Check connecting peer by appName */
-			SAAgentProvider.acceptServiceConnectionRequest(peerAgent);
-			updateConnectStatus('<span class="green-text">Accept<span>');
-			if (peerAgent.appName === appName) {				
-				//updateConnectStatus('<span class="green-text">Accept<span>');
-			} else {
-				SAAgentProvider.rejectServiceConnectionRequest(peerAgent);
-				updateConnectStatus('<span class="red-text">Reject<span>');
-			}
-		},
-
-		onconnect : function(socket) {
-			SASocket = socket;
-			updateConnectStatus('<span class="green-text">Connected<span>');
-			SASocket.setSocketStatusListener(function(reason) {
-				console.log("Service connection lost, Reason : [" + reason
-						+ "]");
-				disconnect();
-			});
-			
-			SASocket.setDataReceiveListener(function(channelId, data) {
-				var action = data;
-				if (channelId === CHANNEL.ACTION)
-					switch (action) {
-						case ACTION.GET:
-						case ACTION.BEFORE_CHANGE:
-						case ACTION.NEW:
-							startPicking();
-							break;
-					}
-			});
-		},
-		onerror : onError
-	};
-
-	var peerAgentFindCallback = {
-		onpeeragentfound : function(peerAgent) {
-			tryCatchProxy(function() {
-				if (peerAgent.appName === appName) {
-					updateConnectStatus("Phone found");
-					SAAgentProvider.setServiceConnectionListener(agentCallback);
-					// this app is not main
-					// SAAgentProvider.requestServiceConnection(peerAgent);
-				} else {
-					updateConnectStatus("Phone not found");
-				}
-			});
-		},
-		onerror : onError
-	}
 
 	function initSAAgent() {
-		function requestSAAgentSuccess(agents) {
-			var i;
-			for (i = 0; i < agents.length; i++) {
-				if (agents[i].role === "CONSUMER") {
-					SAAgentProvider = agents[i];
-					SAAgentProvider
-							.setPeerAgentFindListener(peerAgentFindCallback);
-					SAAgentProvider.findPeerAgents();
-					return;
-				}
-			}
-		}
-
-		function requestSAAgentError(e) {
-			updateConnectStatus("requestSAAgentError");
-		}
-		
 		if (navigator.platform === "Linux i686") {
 			updateConnectStatus("Emulator");
-			startPicking();
 		} else {
 			updateFullValue(TIZEN_L10N.choose);
-			webapis.sa.requestSAAgent(requestSAAgentSuccess, requestSAAgentError);
 		}
+		
+		if (window.startPicking)
+			startPicking();
+		else
+			document.addEventListener("dataReceived", function(e) {
+				startPicking();
+			});
 		
 		if (tizen.power.turnScreenOn)
 			tizen.power.turnScreenOn();
@@ -206,8 +127,6 @@ var start = function() {
 
 		if (navigator.vibrate)
 			navigator.vibrate(200);
-
-
 	}
 
 	function stopPicking(force) {
@@ -225,9 +144,9 @@ var start = function() {
 					key = "~";
 				if (valueToSend === "@")
 					key = "@";
-				if (SASocket) {
-					SASocket.sendSecureData(CHANNEL.ACTION, key);
-					SASocket.close();
+				if (window.SASocket) {
+					window.SASocket.sendSecureData(CHANNEL.ACTION, key);
+					window.SASocket.close();
 				}
 				
 				
@@ -427,4 +346,3 @@ var start = function() {
 	bindEvents();
 	initSAAgent();
 };
-start();
